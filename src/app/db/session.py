@@ -1,6 +1,6 @@
 # app/db/session.py
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, Session
 from app.db.base import Base
 import os
 
@@ -15,3 +15,10 @@ engine = create_engine(DATABASE_URL)
 
 # Tạo session để thao tác với DB
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+def get_db():
+    db: Session = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()

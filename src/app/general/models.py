@@ -14,13 +14,13 @@ class User(Base):
     user_image = Column(String, nullable=True)
     role = Column(String, nullable=False)  # attendee / organizer
 
-    bookings = relationship("Booking", back_populates="user")
-    reviews = relationship("Review", back_populates="user")
-    user_tickets = relationship("UserTicket", back_populates="user")
-    notifications = relationship("Notification", back_populates="user")
-    user_discounts = relationship("UserDiscount", back_populates="user")
-    attendees = relationship("Attendee", back_populates="user")
-    organizer_profile = relationship("Organizer", back_populates="user")
+    # bookings = relationship("Booking", back_populates="user")
+    # reviews = relationship("Review", back_populates="user")
+    # user_tickets = relationship("UserTicket", back_populates="user")
+    # notifications = relationship("Notification", back_populates="user")
+    # user_discounts = relationship("UserDiscount", back_populates="user")
+    # attendees = relationship("Attendee", back_populates="user")
+    # organizer_profile = relationship("Organizer", back_populates="user")
     
 class Notification(Base):
     __tablename__ = "notifications"
@@ -33,5 +33,5 @@ class Notification(Base):
     type = Column(String, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
-    user = relationship("User", back_populates="notifications")
-    event = relationship("Event", back_populates="notifications")
+    # user = relationship("User", back_populates="notifications")
+    # event = relationship("Event", back_populates="notifications")
