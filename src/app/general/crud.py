@@ -46,3 +46,21 @@ def login_user(db: Session, email: str, password: str):
 
     token = create_access_token({"sub": str(user.user_id), "email": user.email, "role": user.role})
     return token, user
+
+
+# Update profile
+def update_user_profile(db: Session, user_id: int, update_data: schemas.ProfileUpdateRequest):
+    user = db.query(models.User).filter(models.User.user_id == user_id).first()
+
+    if not user:
+        return None
+
+    if update_data.full_name is not None:
+        user.full_name = update_data.full_name
+
+    if update_data.phone_number is not None:
+        user.phone_number = update_data.phone_number
+
+    db.commit()
+    db.refresh(user)
+    return user
