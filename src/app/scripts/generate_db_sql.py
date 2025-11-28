@@ -3,7 +3,7 @@ from app.db.session import engine, Base
 # import các models để Base biết
 from app.general import models as general_models
 from app.attendee import models as attendee_models
-from app.organizer import models as organizer_models
+from app.organizer.models import models as organizer_models
 
 from sqlalchemy.schema import CreateTable
 

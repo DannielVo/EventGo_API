@@ -1,7 +1,8 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, Text, Float, DateTime
 from sqlalchemy.orm import relationship
-from app.db.base import Base
+from ...db.base import Base
 from datetime import datetime
+from ...attendee import models
 
 class Organizer(Base):
     __tablename__ = "organizers"
@@ -140,3 +141,5 @@ class Attendee(Base):
 
     user = relationship("User", back_populates="attendees")
     event = relationship("Event", back_populates="attendees")
+
+
