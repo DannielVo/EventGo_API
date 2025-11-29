@@ -1,7 +1,8 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, Text, Float, DateTime
 from sqlalchemy.orm import relationship
-from app.db.base import Base
+from ...db.base import Base
 from datetime import datetime
+from ...attendee import models
 
 class Organizer(Base):
     __tablename__ = "organizers"
@@ -10,8 +11,8 @@ class Organizer(Base):
     user_id = Column(Integer, ForeignKey("users.user_id"))
     company_name = Column(String, nullable=False)
 
-    # events = relationship("Event", back_populates="organizer")
-    # user = relationship("User", back_populates="organizer_profile")
+    events = relationship("Event", back_populates="organizer")
+    user = relationship("User", back_populates="organizer_profile")
 
 class Event(Base):
     __tablename__ = "events"
@@ -25,17 +26,17 @@ class Event(Base):
     event_location = Column(String, nullable=False)
     event_status = Column(String, default="draft")  # draft, published, cancelled, completed
 
-    # organizer = relationship("Organizer", back_populates="events")
-    # tickets = relationship("Ticket", back_populates="event")
-    # seat_maps = relationship("SeatMap", back_populates="event")
-    # reviews = relationship("Review", back_populates="event")
-    # bookings = relationship("Booking", back_populates="event")
-    # notifications = relationship("Notification", back_populates="event")
-    # discounts = relationship("Discount", back_populates="event")
-    # attendees = relationship("Attendee", back_populates="event")
-    # event_media = relationship("EventMedia", back_populates="event")
-    # event_artists = relationship("EventArtist", back_populates="event")
-    # event_categories = relationship("EventCategory", back_populates="event")
+    organizer = relationship("Organizer", back_populates="events")
+    tickets = relationship("Ticket", back_populates="event")
+    seat_maps = relationship("SeatMap", back_populates="event")
+    reviews = relationship("Review", back_populates="event")
+    bookings = relationship("Booking", back_populates="event")
+    notifications = relationship("Notification", back_populates="event")
+    discounts = relationship("Discount", back_populates="event")
+    attendees = relationship("Attendee", back_populates="event")
+    event_media = relationship("EventMedia", back_populates="event")
+    event_artists = relationship("EventArtist", back_populates="event")
+    event_categories = relationship("EventCategory", back_populates="event")
 
 
 class EventMedia(Base):
@@ -46,7 +47,7 @@ class EventMedia(Base):
     media_url = Column(String, nullable=False)
     media_type = Column(String, nullable=False)
 
-    # event = relationship("Event", back_populates="event_media")
+    event = relationship("Event", back_populates="event_media")
 
 
 class Artist(Base):
@@ -55,7 +56,7 @@ class Artist(Base):
     artist_id = Column(Integer, primary_key=True)
     artist_name = Column(String, nullable=False)
 
-    # event_artists = relationship("EventArtist", back_populates="artist")
+    event_artists = relationship("EventArtist", back_populates="artist")
 
 
 class EventArtist(Base):
@@ -64,8 +65,8 @@ class EventArtist(Base):
     event_id = Column(Integer, ForeignKey("events.event_id"), primary_key=True)
     artist_id = Column(Integer, ForeignKey("artists.artist_id"), primary_key=True)
 
-    # event = relationship("Event", back_populates="event_artists")
-    # artist = relationship("Artist", back_populates="event_artists")
+    event = relationship("Event", back_populates="event_artists")
+    artist = relationship("Artist", back_populates="event_artists")
 
 
 class Category(Base):
@@ -75,7 +76,7 @@ class Category(Base):
     category_name = Column(String, nullable=False)
     category_desc = Column(String)
 
-    # event_categories = relationship("EventCategory", back_populates="category")
+    event_categories = relationship("EventCategory", back_populates="category")
 
 
 class EventCategory(Base):
@@ -84,8 +85,8 @@ class EventCategory(Base):
     event_id = Column(Integer, ForeignKey("events.event_id"), primary_key=True)
     category_id = Column(Integer, ForeignKey("categories.category_id"), primary_key=True)
 
-    # event = relationship("Event", back_populates="event_categories")
-    # category = relationship("Category", back_populates="event_categories")
+    event = relationship("Event", back_populates="event_categories")
+    category = relationship("Category", back_populates="event_categories")
 
 
 class Ticket(Base):
@@ -98,10 +99,10 @@ class Ticket(Base):
     ticket_total_quantity = Column(Integer, nullable=False)
     ticket_remaining_quantity = Column(Integer, nullable=False)
 
-    # ticket_type = relationship("TicketType", back_populates="tickets")
-    # event = relationship("Event", back_populates="tickets")
-    # booking_details = relationship("BookingDetail", back_populates="ticket")
-    # user_tickets = relationship("UserTicket", back_populates="ticket")
+    ticket_type = relationship("TicketType", back_populates="tickets")
+    event = relationship("Event", back_populates="tickets")
+    booking_details = relationship("BookingDetail", back_populates="ticket")
+    user_tickets = relationship("UserTicket", back_populates="ticket")
 
 
 class TicketType(Base):
@@ -111,7 +112,7 @@ class TicketType(Base):
     ticket_type_name = Column(String, nullable=False)
     ticket_type_desc = Column(String)
 
-    # tickets = relationship("Ticket", back_populates="ticket_type")
+    tickets = relationship("Ticket", back_populates="ticket_type")
 
 
 class Discount(Base):
@@ -125,8 +126,8 @@ class Discount(Base):
     used_count = Column(Integer, default=0)
     discount_status = Column(String, default="active")  # active, inactive
 
-    # event = relationship("Event", back_populates="discounts")
-    # user_discounts = relationship("UserDiscount", back_populates="discount")
+    event = relationship("Event", back_populates="discounts")
+    user_discounts = relationship("UserDiscount", back_populates="discount")
 
 
 class Attendee(Base):
@@ -138,5 +139,7 @@ class Attendee(Base):
     check_in_status = Column(String, default="pending")  # checked_in, pending
     check_in_time = Column(DateTime, nullable=True)
 
-    # user = relationship("User", back_populates="attendees")
-    # event = relationship("Event", back_populates="attendees")
+    user = relationship("User", back_populates="attendees")
+    event = relationship("Event", back_populates="attendees")
+
+

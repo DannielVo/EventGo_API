@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
-from app.db.session import get_db
-from app.general import schemas, crud, models
-from app.general.services import security, verify_token
+from ..db.session import get_db
+from ..general import schemas, crud, models
+from ..general.services import security, verify_token
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
@@ -28,6 +28,7 @@ def login_user(request: schemas.LoginRequest, db: Session = Depends(get_db)):
 def register_attendee(request: schemas.RegisterRequest, db: Session = Depends(get_db)):
     try:
         user = crud.create_user(db, request, user_type="attendee")
+        is_valid, message = crud.validate_registration_password(request.password)
         return {"message": "Attendee account created", "user_id": user.user_id}
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))

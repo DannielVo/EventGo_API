@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
-from app.general import models, schemas
-from app.general.services import hash_password, verify_password, create_access_token
+from ..general import models, schemas
+from ..general.services import hash_password, verify_password, create_access_token
 
 # Tạo user mới
 def create_user(db: Session, user_data: schemas.RegisterRequest, user_type: str):
@@ -64,3 +64,32 @@ def update_user_profile(db: Session, user_id: int, update_data: schemas.ProfileU
     db.commit()
     db.refresh(user)
     return user
+
+
+# Add this to your crud.py or registration endpoint
+def validate_registration_password(password: str) -> tuple[bool, str]:
+    """
+    Comprehensive password validation for registration
+    """
+    # Check minimum length
+    if len(password) < 6:
+        return False, "Password must be at least 6 characters long"
+    
+    # Check maximum bytes for bcrypt
+    password_bytes = password.encode('utf-8')
+    if len(password_bytes) > 72:
+        return False, "Password is too long. Please use a shorter password."
+    
+    # Check for uppercase
+    if not any(c.isupper() for c in password):
+        return False, "Password must contain at least one uppercase letter"
+    
+    # Check for lowercase
+    if not any(c.islower() for c in password):
+        return False, "Password must contain at least one lowercase letter"
+    
+    # Check for digit
+    if not any(c.isdigit() for c in password):
+        return False, "Password must contain at least one digit"
+    
+    return True, "Password is valid"

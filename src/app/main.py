@@ -1,6 +1,6 @@
 # app/main.py
 from fastapi import FastAPI
-from app.api.api_v1 import api_router
+from .api.api_v1 import api_router
 
 app = FastAPI(title="EventGo API v1")
 

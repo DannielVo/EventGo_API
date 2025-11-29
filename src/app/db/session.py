@@ -1,13 +1,13 @@
 # app/db/session.py
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
-from app.db.base import Base
+from ..db.base import Base
 import os
 
 # Đọc URL từ .env hoặc dùng mặc định bên dưới
 DATABASE_URL = os.getenv(
     "DATABASE_URL",
-    "postgresql+psycopg2://postgres:123456@localhost:5432/eventdb"
+    "postgresql+psycopg2://postgres:Thinh2209%40@localhost:5432/eventgodb"
 )
 
 # Tạo engine kết nối đến PostgreSQL
