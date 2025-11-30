@@ -7,11 +7,7 @@ from enum import Enum
 class OrganizerBase(BaseModel):
     user_id: int
     company_name: str
-    contact_email: Optional[EmailStr] = None
-    phone_number: Optional[str] = None
-    website: Optional[str] = None
-    bio: Optional[str] = None
-    address: Optional[str] = None
+
 
 class OrganizerCreate(OrganizerBase):
     pass
@@ -26,7 +22,6 @@ class OrganizerUpdate(BaseModel):
 
 class OrganizerOut(OrganizerBase):
     organizer_id: int
-    created_at: datetime
     updated_at: Optional[datetime] = None
 
     class Config:

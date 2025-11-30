@@ -22,7 +22,15 @@ def login_user(request: schemas.LoginRequest, db: Session = Depends(get_db)):
     token, user = crud.login_user(db, request.email, request.password)
     if not token:
         raise HTTPException(status_code=401, detail="Invalid email or password")
-    return {"access_token": token, "token_type": "bearer", "role": user.role}
+    return {
+        "access_token": token,
+        "token_type": "bearer",
+        "role": user.role,
+        "user_id": user.user_id,
+        "email": user.email,
+        "full_name": user.full_name,
+        "phone": user.phone_number 
+    }
 
 @router.post("/register-attendee", response_model=dict)
 def register_attendee(request: schemas.RegisterRequest, db: Session = Depends(get_db)):
